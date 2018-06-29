@@ -1,0 +1,30 @@
+pipeline {
+   agent any
+    tools { 
+        maven 'Maven 3.5.3' 
+    }
+	stages {
+        stage('Compile') {
+            steps {
+                sh 'mvn validate compile'
+            }
+        }
+        stage('Test') {
+			steps {
+                sh 'mvn test'
+            }
+        }
+        stage('Package') {
+			steps {
+                sh 'mvn package'
+            }
+        }
+        stage('Build') {
+            steps {
+				script {
+					docker.build("my-app:${env.BUILD_ID}", "-f ./util/appdockerfile .") 
+				}
+            }
+        }
+    }
+}
