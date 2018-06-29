@@ -14,13 +14,13 @@ You only needs to install two plugins in Jenkins:
 
 In the pipeline configure the file system SCM to point to where you installed the app.
 
-Files in this repo:
-Jenkinsfile. Describes the compile/test/package/deploy/run pipeline
-Jenkinsfile.mvn. A first attempt using maven as a plugin instead of a container
-Vagrantfile. I use vagrant and virtualbox to run my local VM. Very convenient as I can share folders between my Windows 10 host and my VM and do all the editing using Windows tools.
-src/... my simple java app
-util/jenkinsdockerfile. A docker file to build an image that has Jenkins and docker inside and allows to run containers from inside the container.
-util/appdockerfile. A docker file to pack the app in a docker image and run it as a container.
-util/ctool.sh A utility shellscript that I use to install docker, create the images, run Jenkins,... easy to follow.
+Files in this repo:\
+Jenkinsfile. Describes the compile/test/package/deploy/run pipeline\
+Jenkinsfile.mvn. A first attempt using maven as a plugin instead of a container\
+Vagrantfile. I use vagrant and virtualbox to run my local VM. Very convenient as I can share folders between my Windows 10 host and my VM and do all the editing using Windows tools.\
+src/... my simple java app\
+util/jenkinsdockerfile. A docker file to build an image that has Jenkins and docker inside and allows to run containers from inside the container.\
+util/appdockerfile. A docker file to pack the app in a docker image and run it as a container.\
+util/ctool.sh A utility shellscript that I use to install docker, create the images, run Jenkins,... easy to follow.\
 
 Enjoy!
