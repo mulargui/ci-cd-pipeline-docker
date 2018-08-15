@@ -22,7 +22,7 @@ pipeline {
         stage('Build') {
             steps {
 				script {
-					docker.build("my-app:${env.BUILD_ID}", "-f ./util/appdockerfile .") 
+					docker.build("my-app:${env.BUILD_ID}", "-f ./infrastructure/appdockerfile .") 
 				}
             }
         }
