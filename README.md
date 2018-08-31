@@ -1,4 +1,4 @@
-# ci-cd-pipeline-docker
+# jenkins-pipeline
 A barebone jenkins pipeline of a java app using docker
 
 My intent was to create a local CI/CD pipeline to support development of a classic java app.
@@ -16,12 +16,12 @@ In the pipeline configure the file system SCM to point to where you installed th
 
 Files in this repo:\
 Jenkinsfile. Describes the compile/test/package/deploy/run pipeline\
+Jenkinsfile.k8s. An example pipeline on k8s
 Jenkinsfile.mvn. A first attempt using maven as a plugin instead of a container\
-Vagrantfile. I use vagrant and virtualbox to run my local VM. Very convenient as I can share folders between my Windows 10 host and my VM and do all the editing using Windows tools.\
+vm/ I use vagrant and virtualbox to run my local VM. Very convenient as I can share folders between my Windows 10 host and my VM and do all the editing using Windows tools. move the vagrantfile to the root of this repo if you want to setup the vm\
 src/... my simple java app\
-infrastructure/jenkinsdockerfile. A docker file to build an image that has Jenkins and docker inside and allows to run containers from inside the container.\
-infrastructure/appdockerfile. A docker file to pack the app in a docker image and run it as a container.\
-infrastructure/setup.sh A utility shellscript that I use to install docker and update the VM... easy to follow.\
-infrastructure/container.sh A utility shellscript that I use to create the images, run Jenkins,... easy to follow.\
+src.docker/ ... how to dockerize the java app
+jenkins.docker/ how to dockerize jenkins
+k8s/ how to install jenkins in kubernetes\
 
 Enjoy!
