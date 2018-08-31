@@ -16,12 +16,12 @@ In the pipeline configure the file system SCM to point to where you installed th
 
 Files in this repo:\
 Jenkinsfile. Describes the compile/test/package/deploy/run pipeline\
-Jenkinsfile.k8s. An example pipeline on k8s
+Jenkinsfile.k8s. An example pipeline on k8s\
 Jenkinsfile.mvn. A first attempt using maven as a plugin instead of a container\
-vm/ I use vagrant and virtualbox to run my local VM. Very convenient as I can share folders between my Windows 10 host and my VM and do all the editing using Windows tools. move the vagrantfile to the root of this repo if you want to setup the vm\
+vm/ I use vagrant and virtualbox to run my local VM. Very convenient as I can share folders between my Windows 10 host and my VM and do all the editing using Windows tools. Move the vagrantfile to the root of this repo if you want to setup the vm\
 src/... my simple java app\
-src.docker/ ... how to dockerize the java app
-jenkins.docker/ how to dockerize jenkins
+src.docker/ ... how to dockerize the java app\
+jenkins.docker/ how to dockerize jenkins\
 k8s/ how to install jenkins in kubernetes\
 
 Enjoy!
