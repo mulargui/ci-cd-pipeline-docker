@@ -25,5 +25,5 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
 	config.vm.network "forwarded_port", guest: 50000,  host: 50000 		# communication with slaves
 
 	# provisioning using a shell script
-	config.vm.provision "os", type: "shell", path: "./infrastructure/setup.sh", args: "ALL"
+	config.vm.provision "os", type: "shell", path: "./vm/setup.sh", args: "ALL"
 end

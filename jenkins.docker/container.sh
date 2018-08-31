@@ -7,8 +7,8 @@
 set -x
 export DEBIAN_FRONTEND=noninteractive
 # Absolute path to this repo
-SCRIPT=$(readlink -f "$0")
-export REPOPATH=$(dirname "$SCRIPT")/..
+SCRIPTPATH=$(readlink -f "$0")
+export REPOPATH=$(dirname "$SCRIPTPATH")/..
 
 # what you can do
 CLEAR=N
@@ -44,27 +44,27 @@ fi
 
 # clean up all images
 if [ "${CLEANUP}" == "Y" ]; then
-	./$0 CLEAR
-	sudo docker rmi -f maven dockerjenkins
+	$0 CLEAR
+	sudo docker rmi -f maven myjenkins
 fi
 
 # create images
 if [ "${BUILD}" == "Y" ]; then
-	./$0 CLEAR
-	./$0 CLEANUP
+	$0 CLEAR
+	$0 CLEANUP
 	sudo docker pull maven:3.5.3-jdk-10
 	sudo docker build \
 		--build-arg HOST_DOCKER_GROUP_ID="`getent group docker | cut -d':' -f3`" \
-		-t dockerjenkins \
-		-f $REPOPATH/infrastructure/jenkinsdockerfile \
+		-t myjenkins \
+		-f $REPOPATH/jenkins.docker/dockerfile \
 		.
 fi
 
 # run jenkins
 if [ "${RUN}" == "Y" ]; then
-	./$0 CLEAR
-	if [ "$(sudo docker images | grep dockerjenkins)" == "" ]; then
-		./$0 BUILD
+	$0 CLEAR
+	if [ "$(sudo docker images | grep myjenkins)" == "" ]; then
+		$0 BUILD
 	fi
 	
 	if [ ! -d "$HOME/jenkins_home" ]; then
@@ -79,14 +79,14 @@ if [ "${RUN}" == "Y" ]; then
 		-v $REPOPATH:/my-app \
 		-v /var/run/docker.sock:/var/run/docker.sock \
 		-v /usr/bin/docker:/usr/bin/docker \
-		dockerjenkins
+		myjenkins
 fi
 
 # interactive maven
 if [ "${INTERACTIVE}" == "Y" ]; then
 	#./$0 CLEAR
 	if [ "$(sudo docker images | grep maven)" == "" ]; then
-		./$0 BUILD
+		$0 BUILD
 	fi
 	sudo docker run --name MVN -ti -v $REPOPATH:/my-app \
 		-v ~/.m2:/root/.m2 maven:3.5.3-jdk-10 /bin/bash

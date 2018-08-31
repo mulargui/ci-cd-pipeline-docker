@@ -40,7 +40,7 @@ pipeline {
         stage('Deploy') {
             steps {
 				script {
-					docker.build("my-app:${env.BUILD_ID}", "-f ./infrastructure/appdockerfile .").tag("latest")
+					docker.build("my-app:${env.BUILD_ID}", "-f ./src.docker/dockerfile .").tag("latest")
 					/*sh '''
 						set +e		# Disable exit on non 0
 						docker rmi -f $(docker images | grep my-app | grep -v "latest" | awk '{print $3}')
