@@ -22,6 +22,6 @@ vm/ I use vagrant and virtualbox to run my local VM. Very convenient as I can sh
 src/... my simple java app\
 src.docker/ ... how to dockerize the java app\
 jenkins.docker/ how to dockerize jenkins\
-k8s/ how to install jenkins in kubernetes\
+k8s/ how to install jenkins in kubernetes
 
 Enjoy!
