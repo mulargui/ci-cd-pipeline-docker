@@ -1,20 +1,55 @@
-pipeline {
-	agent any
-	stages {
-        stage('Compile') {
-            steps {
-                sh 'echo compiling'
-            }
-		}
-        stage('Test') {
-            steps {
-                sh 'echo testing'
-            }
-        }
-        stage('Package') {
-            steps {
-                sh 'echo packaging'
-            }
-        }
+def label = "worker-${UUID.randomUUID().toString()}"
+
+podTemplate(label: label, containers: [
+  containerTemplate(name: 'maven', image: 'maven:3.5.3-jdk-10', command: 'cat', ttyEnabled: true),
+  containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+],
+volumes: [
+  hostPathVolume(mountPath: '/home/.m2', hostPath: '/tmp/jenkins/.m2'),
+  hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
+]) {
+  node(label) {
+    def myRepo = checkout scm
+    def gitCommit = myRepo.GIT_COMMIT
+    def gitBranch = myRepo.GIT_BRANCH
+    def shortGitCommit = "${gitCommit[0..10]}"
+    def previousGitCommit = sh(script: "git rev-parse ${gitCommit}~", returnStdout: true)
+ 
+    stage('Build') {
+      container('maven') {
+        sh "mvn validate compile"
+      }
     }
+    stage('Test') {
+      try {
+        container('maven') {
+          sh """
+            pwd
+            echo "GIT_BRANCH=${gitBranch}" >> /etc/environment
+            echo "GIT_COMMIT=${gitCommit}" >> /etc/environment
+            mvn test
+            """
+        }
+      } catch (exc) {
+        println "Failed to test - ${currentBuild.fullDisplayName}"
+        throw(exc)
+      }
+    }
+    stage('Package') {
+      container('maven') {
+        sh "mvn package"
+      }
+    }
+    stage('Create Docker images') {
+      container('docker') {
+          sh "ls -la"
+          /*sh """
+			docker.build("my-app:${env.BUILD_ID}", "-f ./src.docker/dockerfile .").tag("latest")
+            docker build -t namespace/my-image:${gitCommit} .
+            docker push namespace/my-image:${gitCommit}
+            """*/
+        }
+      }
+    }
+  }
 }
