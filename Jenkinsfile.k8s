@@ -48,7 +48,6 @@ volumes: [
             docker build -t namespace/my-image:${gitCommit} .
             docker push namespace/my-image:${gitCommit}
             """*/
-        }
       }
     }
   }
