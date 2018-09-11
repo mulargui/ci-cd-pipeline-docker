@@ -44,12 +44,13 @@ podTemplate(
     }
     stage('Create Docker images') {
       container('docker') {
-        sh "ls -la"
-        /*sh """
-          docker.build("my-app:${env.BUILD_ID}", "-f ./src.docker/dockerfile .").tag("latest")
+        sh """
+          pwd
+		  ls -la
+		  docker.build("my-app:${env.BUILD_ID}", "-f ./src.docker/dockerfile .").tag("latest")
           docker build -t namespace/my-image:${gitCommit} .
           docker push namespace/my-image:${gitCommit}
-          """*/
+          """
       }
     }
   }

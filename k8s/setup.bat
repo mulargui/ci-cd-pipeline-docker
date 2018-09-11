@@ -18,8 +18,11 @@ del helm-v2.10.0-windows-amd64.zip
 move helm.exe %systemroot%\system32
 helm init
 
+rem wait till everything is up and running
+sleep 120
+
 rem install jenkins using helm
-helm install --name jenkins stable/jenkins
+helm install --name jenkins -f %~dp0jenkins.yaml stable/jenkins
 
 rem show the dashboard
 minikube dashboard
