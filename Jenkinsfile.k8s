@@ -43,7 +43,7 @@ podTemplate(
           pwd
 		  ls -la 
 		  ls -la target
-		  docker build -t my-app:${shortGitCommit} -t my-app:${shortGitCommit} ./src.docker
+		  docker build -t my-app:${shortGitCommit} -t my-app:latest ./src.docker .
 		  docker images
           """
       }
