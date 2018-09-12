@@ -40,11 +40,8 @@ podTemplate(
     stage('Create Docker image') {
       container('docker') {
         sh """
-          pwd
-		  ls -la 
-		  ls -la target
-		  docker build -t my-app:${shortGitCommit} -t my-app:latest -f ./src.docker/dockerfile .
-		  docker images
+		  docker build -q -t my-app:${shortGitCommit} -t my-app:latest -f ./src.docker/dockerfile .
+		  # docker images
           """
       }
     }
