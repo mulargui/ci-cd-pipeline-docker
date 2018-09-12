@@ -3,10 +3,12 @@ def label = "worker-${UUID.randomUUID().toString()}"
 podTemplate(
   label: label, 
   containers: [
-    containerTemplate(name: 'maven', image: 'maven:3.5.3-jdk-10', command: 'cat', ttyEnabled: true)
+    containerTemplate(name: 'maven', image: 'maven:3.5.3-jdk-10', command: 'cat', ttyEnabled: true),
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
   ],
   volumes: [
     hostPathVolume(mountPath: '/root/.m2', hostPath: '/tmp/jenkins/.m2'),
+    hostPathVolume(mountPath: '/var/run/docker.sock', hostPath: '/var/run/docker.sock')
   ]) {
   node(label) {
     def myRepo = checkout scm
@@ -41,10 +43,13 @@ podTemplate(
       }
     }
     stage('Create Docker images') {
-      container('maven') {
+      container('docker') {
         sh """
           pwd
 		  ls -la
+		  docker.build("my-app:${env.BUILD_ID}", "-f ./src.docker/dockerfile .").tag("latest")
+          docker build -t namespace/my-image:${gitCommit} .
+          docker push namespace/my-image:${gitCommit}
           """
       }
     }
