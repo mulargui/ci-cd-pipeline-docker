@@ -49,7 +49,7 @@ podTemplate(
       container('docker') {
         sh """
           # curl -LO https://storage.googleapis.com/kubernetes-release/release/\$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-          wget https://storage.googleapis.com/kubernetes-release/release/v1.11.3/bin/linux/amd64/kubectl
+          wget -q https://storage.googleapis.com/kubernetes-release/release/v1.11.3/bin/linux/amd64/kubectl
           chmod +x ./kubectl
 		  ./kubectl set image deployment.apps/my-app-deployment my-app=my-app:${shortGitCommit}
           """
