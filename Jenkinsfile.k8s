@@ -42,14 +42,16 @@ podTemplate(
         sh "mvn package"
       }
     }
-    stage('Create Docker images') {
+    stage('Create Docker image') {
       container('docker') {
         sh """
           pwd
 		  ls -la
-		  docker.build("my-app:${env.BUILD_ID}", "-f ./src.docker/dockerfile .").tag("latest")
-          docker build -t namespace/my-image:${gitCommit} .
-          docker push namespace/my-image:${gitCommit}
+		  docker build -t my-app:${shortGitCommit} -t my-app:${shortGitCommit} ./src.docker
+		  docker images
+		  #docker.build("my-app:${env.BUILD_ID}", "-f ./src.docker/dockerfile .").tag("latest")
+          #docker build -t namespace/my-app:${gitCommit} .
+          #docker push namespace/my-app:${gitCommit}
           """
       }
     }
