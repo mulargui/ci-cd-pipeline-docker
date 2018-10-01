@@ -4,7 +4,8 @@ podTemplate(
   label: label, 
   containers: [
     containerTemplate(name: 'maven', image: 'maven:3.5.3-jdk-10', command: 'cat', ttyEnabled: true),
-    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true)
+    containerTemplate(name: 'docker', image: 'docker', command: 'cat', ttyEnabled: true),
+	containerTemplate(name: 'kubectl', image: 'amaceog/kubectl', ttyEnabled: true, command: 'cat')
   ],
   volumes: [
     hostPathVolume(mountPath: '/root/.m2', hostPath: '/tmp/jenkins/.m2'),
@@ -46,12 +47,18 @@ podTemplate(
       }
     }
     stage('Update deployment with the new image') {
+      container('kubectl') {
+            sh "kubectl set image deployment.apps/my-app-deployment my-app=my-app:${shortGitCommit)"
+      }
+    }
+    stage('Update deployment with the image') {
       container('docker') {
         sh """
           # curl -LO https://storage.googleapis.com/kubernetes-release/release/\$(curl -s https://storage.googleapis.com/kubernetes-release/release/stable.txt)/bin/linux/amd64/kubectl
-          wget -q https://storage.googleapis.com/kubernetes-release/release/v1.11.3/bin/linux/amd64/kubectl
-          chmod +x ./kubectl
-		  ./kubectl set image deployment.apps/my-app-deployment my-app=my-app:${shortGitCommit}
+          # wget -q https://storage.googleapis.com/kubernetes-release/release/v1.11.3/bin/linux/amd64/kubectl
+          # chmod +x ./kubectl
+		  # ./kubectl set image deployment.apps/my-app-deployment my-app=my-app:${shortGitCommit}
+		  kubectl config view
           """
       }
     }

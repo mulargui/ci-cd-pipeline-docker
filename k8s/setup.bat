@@ -3,7 +3,7 @@ rem you need to run this shellscript as an administrator
 rem install minikube
 curl -LO https://storage.googleapis.com/kubernetes-release/release/v1.11.2/bin/windows/amd64/kubectl.exe
 move kubectl.exe %systemroot%\system32
-curl -LO https://storage.googleapis.com/minikube/releases/v0.28.2/minikube-windows-amd64.exe
+curl -LO https://storage.googleapis.com/minikube/releases/v0.29.0/minikube-windows-amd64.exe
 ren minikube-windows-amd64.exe minikube.exe
 move minikube.exe %systemroot%\system32
 
