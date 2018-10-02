@@ -42,13 +42,18 @@ podTemplate(
       container('docker') {
         sh """
 		  docker build -q -t my-app:${shortGitCommit} -t my-app:latest -f ./src.docker/dockerfile .
-		  # docker images
           """
       }
     }
     stage('Update deployment with the new image') {
       container('kubectl') {
-        sh "kubectl set image deployment.apps/my-app-deployment my-app=my-app:${shortGitCommit}"
+        sh """
+		  kubectl rollout status deployment/my-app-deployment
+		  if [ $? -eq 0 ]
+		  then 
+		    kubectl set image deployment.apps/my-app-deployment my-app=my-app:${shortGitCommit}
+		  fi
+		  """
       }
     }
   }
