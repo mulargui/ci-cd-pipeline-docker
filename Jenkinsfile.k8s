@@ -48,6 +48,7 @@ podTemplate(
     stage('Update deployment with the new image') {
       container('kubectl') {
         sh """
+		  set +e		# Disable exit on non 0
 		  kubectl rollout status deployment/my-app-deployment
 		  if [ $? -eq 0 ]
 		  then 
