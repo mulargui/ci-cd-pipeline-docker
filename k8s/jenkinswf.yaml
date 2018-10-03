@@ -1,0 +1,50 @@
+
+Master:
+  AdminPassword: tmp
+  ServiceType: NodePort
+  NodePort: 30500
+  Jobs:
+    pipeline-test: |-
+      <?xml version='1.0' encoding='UTF-8'?>
+      <flow-definition plugin="workflow-job@2.24">
+        <description></description>
+        <keepDependencies>false</keepDependencies>
+        <properties>
+          <jenkins.model.BuildDiscarderProperty>
+            <strategy class="hudson.tasks.LogRotator">
+              <daysToKeep>1</daysToKeep>
+              <numToKeep>1</numToKeep>
+              <artifactDaysToKeep>-1</artifactDaysToKeep>
+              <artifactNumToKeep>-1</artifactNumToKeep>
+            </strategy>
+          </jenkins.model.BuildDiscarderProperty>
+        </properties>
+        <definition class="org.jenkinsci.plugins.workflow.cps.CpsScmFlowDefinition" plugin="workflow-cps@2.57">
+          <scm class="hudson.plugins.git.GitSCM" plugin="git@3.9.1">
+            <configVersion>2</configVersion>
+            <userRemoteConfigs>
+              <hudson.plugins.git.UserRemoteConfig>
+                <url>https://www.github.com/mulargui/jenkins-pipeline</url>
+              </hudson.plugins.git.UserRemoteConfig>
+            </userRemoteConfigs>
+            <branches>
+              <hudson.plugins.git.BranchSpec>
+                <name>*/master</name>
+              </hudson.plugins.git.BranchSpec>
+            </branches>
+            <doGenerateSubmoduleConfigurations>false</doGenerateSubmoduleConfigurations>
+            <submoduleCfg class="list"/>
+            <extensions/>
+          </scm>
+          <scriptPath>pipeline/Jenkinsfile.k8s</scriptPath>
+          <lightweight>true</lightweight>
+        </definition>
+        <triggers/>
+        <authToken>my-app</authToken>
+        <disabled>false</disabled>
+      </flow-definition>      
+
+
+rbac:
+  install: true
+  
