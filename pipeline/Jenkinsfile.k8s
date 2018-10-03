@@ -52,10 +52,12 @@ podTemplate(
 		  kubectl rollout status deployment/my-app-deployment
 		  if [ \$? -eq 0 ]
 		  then 
-		    set -e		# enable exit on non 0
+		    set -e		# Enable exit on non 0
 		    kubectl set image deployment.apps/my-app-deployment my-app=my-app:${shortGitCommit}
 	      else
-		    set -e		# enable exit on non 0
+		    set -e		# Enable exit on non 0
+			pwd
+			ls
 			kubectl create -f ./k8s/my-app-deployment.yaml
 		  fi
 		  """
