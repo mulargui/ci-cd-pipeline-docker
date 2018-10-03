@@ -41,7 +41,7 @@ podTemplate(
     stage('Create Docker image') {
       container('docker') {
         sh """
-		  docker build -q -t my-app:${shortGitCommit} -t my-app:latest -f ./src.docker/dockerfile .
+		  docker build -q -t my-app:${shortGitCommit} -t my-app:latest -f src.docker/dockerfile .
           """
       }
     }
@@ -56,9 +56,7 @@ podTemplate(
 		    kubectl set image deployment.apps/my-app-deployment my-app=my-app:${shortGitCommit}
 	      else
 		    set -e		# Enable exit on non 0
-			pwd
-			ls
-			kubectl create -f ./k8s/my-app-deployment.yaml
+			kubectl create -f k8s/my-app-deployment.yaml
 		  fi
 		  """
       }
