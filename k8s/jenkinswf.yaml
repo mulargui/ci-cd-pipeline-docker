@@ -4,7 +4,7 @@ Master:
   ServiceType: NodePort
   NodePort: 30500
   Jobs:
-    pipeline-test: |-
+    pipeline-my-app: |-
       <?xml version='1.0' encoding='UTF-8'?>
       <flow-definition plugin="workflow-job@2.24">
         <description></description>
