@@ -17,13 +17,14 @@ minikube status
 rem install helm
 set helmver=v2.12.0
 curl -LO https://storage.googleapis.com/kubernetes-helm/helm-%helmver%-windows-amd64.zip
-unzip -j helm-%helmver%-windows-amd64.zip "windows-amd64/helm.exe"
+powershell -command "Expand-Archive .\helm-%helmver%-windows-amd64.zip .\helm"
+move .\helm\windows-amd64\helm.exe %systemroot%\system32
 del helm-%helmver%-windows-amd64.zip
-move helm.exe %systemroot%\system32
+rmdir /s /Q .\helm
 helm init
 
 rem wait till everything is up and running
-sleep 120
+timeout 120
 
 rem install jenkins using helm
 helm install --name jenkins -f %~dp0jenkins.yaml stable/jenkins
