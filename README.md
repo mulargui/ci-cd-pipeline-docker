@@ -16,7 +16,7 @@ In the pipeline configure the file system SCM to point to where you installed th
 
 Files in this repo:\
 vm/... I use vagrant and virtualbox to run my local VM. Very convenient as I can share folders between my Windows 10 host and my VM and do all the editing using Windows tools. Move the vagrantfile to the root of this repo if you want to setup the vm\
-k8s/... how to install everything to work in kubernetes\
+k8s. templates to create the service in kubernetes. tested with minikube. Edit setup.bat to point to the directory where you cloned the repo. You can see how I set up minikube in the repo http://github.com/mulargui/healthylinkx-k8s \
 jenkins.docker/... how to dockerize jenkins\
 src/... my simple java app\
 src.docker/... how to dockerize the java app\
